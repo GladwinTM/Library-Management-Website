@@ -1,48 +1,58 @@
-let library_management_form = document.getElementById('library_management_form');
-let searchInput = document.getElementById('searchInput');
-let searchResults = document.getElementById('searchResults');
-let spinner = document.getElementById('spinner');
+document.addEventListener('DOMContentLoaded', () => {
+    const libraryManagementForm = document.getElementById('library_management_form');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const spinner = document.getElementById('spinner');
 
+    // Function to create and append search result elements
+    function appendSearchResults(bookAuthor, bookImageLink, bookTitle) {
+        const bookContainer = document.createElement('div');
+        bookContainer.classList.add('book-container'); // Add a class for styling
 
-library_management_form.addEventListener('keydown', function(event) {
+        const imageEl = document.createElement('img');
+        imageEl.src = bookImageLink;
+        imageEl.alt = `Cover image of ${bookTitle}`;
+        imageEl.classList.add('book-image'); // Add a class for styling
+        bookContainer.appendChild(imageEl);
 
-    function append_search_results(book_author, book_image_link, book_title) {
+        const pEl = document.createElement('p');
+        pEl.textContent = `Author: ${bookAuthor}`;
+        pEl.classList.add('book-author'); // Add a class for styling
+        bookContainer.appendChild(pEl);
 
-        let book_container = document.createElement("div");
-        let image_el = document.createElement('img');
-        image_el.src = book_image_link;
-        book_container.appendChild(image_el);
-        let p_el = document.createElement('p');
-        p_el.textContent = book_author;
-        book_container.appendChild(p_el);
-
-        searchResults.appendChild(book_container);
+        searchResults.appendChild(bookContainer);
     }
 
-    if (event.key === "Enter"); {
-        spinner.classList.toggle("d-none");
+    // Event listener for search input
+    searchInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default form submission
 
-        searchResults.textContent = "";
+            spinner.classList.remove('d-none'); // Show spinner
+            searchResults.innerHTML = ''; // Clear previous results
 
-        let searchInput_value = searchInput.value;
+            const searchInputValue = searchInput.value.trim();
+            if (!searchInputValue) return; // Exit if input is empty
 
-        let options = {
-            method: "GET"
-        };
-
-        fetch("https://apis.ccbp.in/book-store?title=" + searchInput_value, options)
-            .then(function(response) {
-                return response.text();
-            })
-            .then(function(data) {
-                let parsedata = JSON.parse(data);
-                for (let book_object of parsedata.search_results) {
-                    let book_author = book_object.author;
-                    let book_image_link = book_object.imageLink;
-                    let book_title = book_object.title;
-                    append_search_results(book_author, book_image_link, book_title);
-                }
-            });
-
-    }
-})
+            fetch(`https://apis.ccbp.in/book-store?title=${encodeURIComponent(searchInputValue)}`)
+                .then(response => response.json()) // Parse response as JSON
+                .then(data => {
+                    if (data.search_results) {
+                        data.search_results.forEach(book => {
+                            const { author, imageLink, title } = book;
+                            appendSearchResults(author, imageLink, title);
+                        });
+                    } else {
+                        searchResults.textContent = 'No results found';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    searchResults.textContent = 'Error fetching data';
+                })
+                .finally(() => {
+                    spinner.classList.add('d-none'); // Hide spinner
+                });
+        }
+    });
+});
