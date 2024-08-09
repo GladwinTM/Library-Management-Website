@@ -1,16 +1,75 @@
+/* Importing fonts */
 @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap');
 
+/* General body styling */
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5; /* Optional: light background color for better contrast */
+}
 
+/* Styling for the top container with background image */
 .top_container_bg_image {
     background-image: url('https://assets.ccbp.in/frontend/dynamic-webapps/library-management-bg.png');
     background-size: cover;
-    text-align: center;
-}
-
-.form_heading {
+    background-position: center;
     color: white;
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 1000px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
+/* Styling for the form heading */
+.form_heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Styling for the search input */
 .input_el {
-    border-color: yellow;
+    border: 2px solid yellow;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Spinner styling */
+.spinner-border {
+    color: yellow;
+}
+
+/* Centering the search results */
+#searchResults {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.book-container {
+    text-align: center;
+    margin: 10px;
+}
+
+.book-image {
+    width: 150px; /* Adjust as needed */
+    height: auto;
+    border-radius: 4px;
+}
+
+.book-author {
+    margin-top: 8px;
 }
